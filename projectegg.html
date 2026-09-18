@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SVA Project Egg · H.A.T.C.H 破殼者</title>
+<meta name="description" content="第一屆破殼者｜培訓跳唱歌手">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #14161a; }
+  iframe {
+    display: block;
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    border: 0;
+  }
+  .fallback {
+    display: none;
+    min-height: 100vh;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 24px;
+    color: #f4f3ef;
+    font-family: -apple-system, 'Noto Sans TC', Arial, sans-serif;
+  }
+  .fallback.show { display: flex; }
+  .fallback h1 { font-size: 20px; margin: 0 0 10px; }
+  .fallback p { font-size: 14px; color: #c9ccd1; max-width: 380px; line-height: 1.7; margin: 0 0 22px; }
+  .fallback a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #5fae90;
+    color: #14161a;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 14px;
+    padding: 14px 26px;
+    min-height: 48px;
+  }
+</style>
+</head>
+<body>
+  <iframe
+    id="peFrame"
+    src="https://projectegghk.my.canva.site/website-in-dynamischem-stil-in-gelb-schwarz-weiss"
+    title="SVA Project Egg · H.A.T.C.H 破殼者"
+    referrerpolicy="no-referrer-when-downgrade"
+    allow="fullscreen"
+  ></iframe>
+
+  <div id="peFallback" class="fallback">
+    <h1>SVA Project Egg · H.A.T.C.H 破殼者</h1>
+    <p>呢個頁面未能喺度直接顯示，請撳下面個掣去返實際頁面。</p>
+    <a href="https://projectegghk.my.canva.site/website-in-dynamischem-stil-in-gelb-schwarz-weiss">前往 Project Egg →</a>
+  </div>
+
+  <script>
+    // If the iframe fails to load (e.g. blocked by X-Frame-Options/CSP),
+    // most browsers leave it blank without firing an error event reliably,
+    // so we check after a short delay whether it actually rendered anything.
+    var frame = document.getElementById('peFrame');
+    var fallback = document.getElementById('peFallback');
+    var loaded = false;
+
+    frame.addEventListener('load', function () { loaded = true; });
+
+    setTimeout(function () {
+      if (!loaded) {
+        frame.style.display = 'none';
+        fallback.classList.add('show');
+      }
+    }, 3500);
+  </script>
+</body>
+</html>

@@ -4,32 +4,26 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SVA Project Egg · H.A.T.C.H 破殼者</title>
-<meta name="description" content="第一屆破殼者｜培訓跳唱歌手">
+<meta http-equiv="refresh" content="0; url=https://projectegghk.my.canva.site/website-in-dynamischem-stil-in-gelb-schwarz-weiss">
+<link rel="canonical" href="https://projectegghk.my.canva.site/website-in-dynamischem-stil-in-gelb-schwarz-weiss">
 <style>
   * { box-sizing: border-box; }
-  html, body { margin: 0; height: 100%; background: #14161a; }
-  iframe {
-    display: block;
-    width: 100%;
-    height: 100vh;
-    height: 100dvh;
-    border: 0;
-  }
-  .fallback {
-    display: none;
+  body {
+    margin: 0;
     min-height: 100vh;
+    display: flex;
     align-items: center;
     justify-content: center;
-    flex-direction: column;
-    text-align: center;
-    padding: 24px;
+    background: #14161a;
     color: #f4f3ef;
     font-family: -apple-system, 'Noto Sans TC', Arial, sans-serif;
+    text-align: center;
+    padding: 24px;
   }
-  .fallback.show { display: flex; }
-  .fallback h1 { font-size: 20px; margin: 0 0 10px; }
-  .fallback p { font-size: 14px; color: #c9ccd1; max-width: 380px; line-height: 1.7; margin: 0 0 22px; }
-  .fallback a {
+  .wrap { max-width: 420px; }
+  h1 { font-size: 22px; font-weight: 700; margin: 0 0 10px; letter-spacing: -.02em; }
+  p { font-size: 14px; color: #c9ccd1; line-height: 1.7; margin: 0 0 24px; }
+  a.btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -42,38 +36,15 @@
     min-height: 48px;
   }
 </style>
+<script>
+  window.location.replace('https://projectegghk.my.canva.site/website-in-dynamischem-stil-in-gelb-schwarz-weiss');
+</script>
 </head>
 <body>
-  <iframe
-    id="peFrame"
-    src="https://projectegghk.my.canva.site/website-in-dynamischem-stil-in-gelb-schwarz-weiss"
-    title="SVA Project Egg · H.A.T.C.H 破殼者"
-    referrerpolicy="no-referrer-when-downgrade"
-    allow="fullscreen"
-  ></iframe>
-
-  <div id="peFallback" class="fallback">
+  <div class="wrap">
     <h1>SVA Project Egg · H.A.T.C.H 破殼者</h1>
-    <p>呢個頁面未能喺度直接顯示，請撳下面個掣去返實際頁面。</p>
-    <a href="https://projectegghk.my.canva.site/website-in-dynamischem-stil-in-gelb-schwarz-weiss">前往 Project Egg →</a>
+    <p>啱啱帶緊你去 Project Egg 個頁面…如果冇自動跳轉，請撳下面個掣。</p>
+    <a class="btn" href="https://projectegghk.my.canva.site/website-in-dynamischem-stil-in-gelb-schwarz-weiss">前往 Project Egg →</a>
   </div>
-
-  <script>
-    // If the iframe fails to load (e.g. blocked by X-Frame-Options/CSP),
-    // most browsers leave it blank without firing an error event reliably,
-    // so we check after a short delay whether it actually rendered anything.
-    var frame = document.getElementById('peFrame');
-    var fallback = document.getElementById('peFallback');
-    var loaded = false;
-
-    frame.addEventListener('load', function () { loaded = true; });
-
-    setTimeout(function () {
-      if (!loaded) {
-        frame.style.display = 'none';
-        fallback.classList.add('show');
-      }
-    }, 3500);
-  </script>
 </body>
 </html>

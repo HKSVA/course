@@ -1,20 +1,18 @@
 (() => {
- const config=window.FESTIVAL_CONFIG || {}, form=document.getElementById('order-form'), box=document.getElementById('order-box'), message=document.getElementById('order-message');
- const query=new URLSearchParams(location.search), keys=['utm_source','utm_medium','utm_campaign'];
- try { keys.forEach(k=>{ if(query.has(k)) sessionStorage.setItem('festival_'+k,query.get(k).slice(0,120)); }); } catch (_) {}
- if(!config.salesEnabled || !/^https:\/\/script\.google\.com\/macros\/s\/[^/]+\/exec$/.test(config.endpoint || '')) return;
- box.hidden=false; document.querySelectorAll('.sales-notice').forEach(e=>e.hidden=true);
- const pass=document.getElementById('pass'), classes=[...document.querySelectorAll('.class-choice')];
- pass.addEventListener('change',()=>{if(pass.checked) classes.forEach(c=>c.checked=false)}); classes.forEach(c=>c.addEventListener('change',()=>{if(c.checked) pass.checked=false}));
- let orderId='';
- form.addEventListener('submit',async e=>{
-  e.preventDefault(); const products=pass.checked?['CREATOR_PASS']:classes.filter(c=>c.checked).map(c=>c.value); if(!products.length){message.textContent='請選擇門票或公開課。';return}
-  if(!window.crypto || !crypto.randomUUID){message.textContent='請使用較新的瀏覽器報名。';return}
-  if(!orderId) orderId='LMC-'+crypto.randomUUID();
-  const data={orderId,products,buyerName:form.buyerName.value,email:form.email.value,phone:form.phone.value,participant:form.participant.value};
-  keys.forEach(k=>{try{data[k]=sessionStorage.getItem('festival_'+k)||''}catch(_){data[k]=query.get(k)||''}});
-  const btn=form.querySelector('button'); btn.disabled=true; message.textContent='正在提交…';
-  try {const response=await fetch(config.endpoint,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(data)}); const result=await response.json(); if(!result.ok) throw Error(result.error||'提交失敗'); form.hidden=true; message.replaceChildren(); const heading=document.createElement('strong'); heading.textContent='已收到報名申請，付款及名額仍待確認。'; const p=document.createElement('p'); p.textContent='訂單編號：'+result.orderId+' · HK$'+result.amount+' · 狀態：'+result.status; const instructions=document.createElement('p'); instructions.textContent=result.instructions; message.append(heading,p,instructions); }
-  catch(err){message.textContent='未能確認提交結果。請保留此頁並重試，或聯絡 SVA。訂單編號：'+orderId+'。 '+err.message;btn.disabled=false;}
- });
+ const cfg=window.FESTIVAL_CONFIG||{},form=document.getElementById('order-form'),box=document.getElementById('order-box'),message=document.getElementById('order-message'),payment=document.getElementById('checkout-payment'),timer=document.getElementById('hold-countdown'),proof=document.getElementById('payment-proof'),button=form.querySelector('button'),pass=document.getElementById('pass'),choices=[...document.querySelectorAll('.class-choice')],total=document.getElementById('payment-total');
+ const utm=new URLSearchParams(location.search);['utm_source','utm_medium','utm_campaign'].forEach(k=>{try{if(utm.has(k))sessionStorage.setItem('festival_'+k,utm.get(k).slice(0,120))}catch(_){}});
+ if(!cfg.salesEnabled||!/^https:\/\/script\.google\.com\/macros\/s\/[^/]+\/exec$/.test(cfg.endpoint||''))return;
+ box.hidden=false;document.querySelectorAll('.sales-notice').forEach(x=>x.hidden=true);
+ const key='festival_reservation_v1';let state=null;try{state=JSON.parse(sessionStorage.getItem(key)||'null')}catch(_){}
+ function selected(){return pass.checked?['CREATOR_PASS']:choices.filter(c=>c.checked).map(c=>c.value)}
+ function updateAmount(){let products=selected(),amount=pass.checked?2772:products.reduce((n,x)=>n+(x.startsWith('LIVE_')?180:400),0);total.textContent='應付金額：HK$'+amount;}
+ pass.addEventListener('change',()=>{if(pass.checked)choices.forEach(c=>c.checked=false);updateAmount()});choices.forEach(c=>c.addEventListener('change',()=>{if(c.checked)pass.checked=false;updateAmount()}));updateAmount();
+ async function send(d){let r=await fetch(cfg.endpoint,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(d)});let j=await r.json();if(!j.ok)throw Error(j.error||'提交失敗');return j}
+ function showHold(){if(!state)return;payment.hidden=false;proof.required=true;document.getElementById('payment-display').textContent=state.instructions;total.textContent='應付金額：HK$'+state.amount;button.textContent='上載單據並提交';[pass,...choices,form.buyerName,form.email,form.phone,form.participant].forEach(x=>x.disabled=true);function tick(){let secs=Math.max(0,Math.ceil((Date.parse(state.expiresAt)-Date.now())/1000));timer.textContent=secs?'名額暫留：'+Math.floor(secs/60)+':'+String(secs%60).padStart(2,'0'):'暫留已過期；如已付款，請聯絡 SVA。';if(!secs){button.disabled=true;const reset=document.createElement('button');reset.type='button';reset.textContent='未付款，重新選票';reset.onclick=()=>{sessionStorage.removeItem(key);location.reload()};timer.after(reset);return}setTimeout(tick,1000)}tick()}
+ if(state&&state.expiresAt){showHold()}
+ form.addEventListener('submit',async e=>{e.preventDefault();button.disabled=true;message.textContent='處理中，請稍候…';try{
+ if(!state){let products=selected();if(!products.length)throw Error('請選擇門票或公開課。');if(!crypto.randomUUID)throw Error('請使用較新的瀏覽器。');state={orderId:'LMC-'+crypto.randomUUID(),token:crypto.randomUUID(),products,buyerName:form.buyerName.value,email:form.email.value,phone:form.phone.value,participant:form.participant.value};['utm_source','utm_medium','utm_campaign'].forEach(k=>{try{state[k]=sessionStorage.getItem('festival_'+k)||''}catch(_){state[k]=''}});try{sessionStorage.setItem(key,JSON.stringify(state))}catch(_){throw Error('瀏覽器不允許儲存資料，請使用可儲存資料的瀏覽器。')} }
+ if(!state.expiresAt){let result=await send({...state,action:'reserve'});Object.assign(state,{expiresAt:result.expiresAt,amount:result.amount,instructions:result.instructions});sessionStorage.setItem(key,JSON.stringify(state));showHold();message.textContent='請付款後在保留時間內上載單據。';button.disabled=false;return}
+ const f=proof.files[0];if(!f||f.size>3*1024*1024||!['image/jpeg','image/png','application/pdf'].includes(f.type))throw Error('請上載不超過 3 MB 的 JPG、PNG 或 PDF 單據。');let proofBase64=await new Promise((resolve,reject)=>{const rd=new FileReader();rd.onload=()=>resolve(String(rd.result).split(',')[1]);rd.onerror=()=>reject(Error('讀取單據失敗'));rd.readAsDataURL(f)});let result=await send({...state,action:'submit',proofMime:f.type,proofBase64});sessionStorage.removeItem(key);form.hidden=true;message.textContent='已收到單據，付款待 SVA 核實；這不是門票。訂單編號：'+result.orderId+'。';
+ }catch(err){message.textContent='未能完成：'+err.message+(state?'。請保留訂單編號 '+state.orderId+'，如已付款請聯絡 SVA。':'');button.disabled=false}});
 })();

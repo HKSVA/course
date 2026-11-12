@@ -1,2 +1,2 @@
-// SALES MUST REMAIN FALSE until deployment, allocation and tests are complete.
-window.FESTIVAL_CONFIG = { salesEnabled: false, endpoint: '' };
+// 保持關閉，直至程式完成安全及端對端測試。
+window.FESTIVAL_CONFIG = { salesEnabled: false, endpoint: '', paymentInstructions: "FPS 轉數快：124418161\n恒生銀行 Bank Code：024\n戶口名稱：Guddy's Vocal Studio\n戶口號碼：242-436046-001\n查詢：WhatsApp +852 6898 4558 · info@hksva.com" };

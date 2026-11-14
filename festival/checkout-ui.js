@@ -6,7 +6,7 @@
  const submit=form.querySelector('button[type="submit"]'), next=$('#wizard-next'), back=$('#wizard-back');
  const titles=['選擇你的參與方式','揀好場次，一起參與。','填寫參加者資料','核對你的訂單','付款及上載單據'];
  const labels=['選擇體驗','場次及數量','參加者','核對訂單','付款單據'];
- const images={CREATOR_PASS:'hero.jpg',D1_VOCAL:'Guddy.png',D1_SONGWRITING:'02_J-Arie.png',D1_LYRIC:'Oscar.png',D2_VOCAL_SCIENCE:'Guddy.png',D2_PERFORMANCE:'Manson.png',D2_HARMONY:'Ah-Lee.png',LIVE_D1:'live-1.jpg',LIVE_D2:'live-2.jpg'};
+ const images={CREATOR_PASS:'hero-20261114.jpg',D1_VOCAL:'Guddy.png',D1_SONGWRITING:'02_J-Arie.png',D1_LYRIC:'Oscar.png',D2_VOCAL_SCIENCE:'Guddy.png',D2_PERFORMANCE:'Manson.png',D2_HARMONY:'Ah-Lee.png',LIVE_D1:'live-1.jpg',LIVE_D2:'live-2.jpg'};
  let step=0,returnFocus=null,completed=false;
  const selected=()=>$('#pass').checked?['CREATOR_PASS']:[...document.querySelectorAll('.class-choice:checked')].map(x=>x.value);
  const quantity=sku=>Number(document.querySelector('[data-quantity="'+sku+'"]').value);

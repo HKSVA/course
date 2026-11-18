@@ -6,9 +6,9 @@
  const submit=form.querySelector('button[type="submit"]'), next=$('#wizard-next'), back=$('#wizard-back');
  const titles=['選擇你的參與方式','揀好場次，一起參與。','填寫參加者資料','核對你的訂單','付款及上載單據'];
  const labels=['選擇體驗','場次及數量','參加者','核對訂單','付款單據'];
- const images={CREATOR_PASS:'hero-20261114.jpg',D1_VOCAL:'Guddy.png',D1_SONGWRITING:'02_J-Arie.png',D1_LYRIC:'Oscar.png',D2_VOCAL_SCIENCE:'Guddy.png',D2_PERFORMANCE:'Manson.png',D2_HARMONY:'Ah-Lee.png',LIVE_D1:'live-1.jpg',LIVE_D2:'live-2.jpg'};
+ const images={DAY1_PASS:'hero-20261114.jpg',DAY2_PASS:'hero-20261114.jpg',CREATOR_PASS:'hero-20261114.jpg',D1_VOCAL:'Guddy.png',D1_SONGWRITING:'02_J-Arie.png',D1_LYRIC:'Oscar.png',D2_VOCAL_SCIENCE:'Guddy.png',D2_PERFORMANCE:'Manson.png',D2_HARMONY:'Ah-Lee.png',LIVE_D1:'live-1.jpg',LIVE_D2:'live-2.jpg',DAY3_FINAL:'day3-final.jpg',DAY3_CONCERT:'day3-not-for-sale.jpg',DAY3_FULLPASS:'day3-final.jpg'};
  let step=0,returnFocus=null,completed=false;
- const selected=()=>$('#pass').checked?['CREATOR_PASS']:[...document.querySelectorAll('.class-choice:checked')].map(x=>x.value);
+ const selected=()=>($('#pass').checked?['CREATOR_PASS']:[]).concat([...document.querySelectorAll('.class-choice:checked')].map(x=>x.value));
  const quantity=sku=>Number(document.querySelector('[data-quantity="'+sku+'"]').value);
  const input=sku=>sku==='CREATOR_PASS'?$('#pass'):document.querySelector('.class-choice[value="'+sku+'"]');
  const money=n=>'HK$'+Number(n).toLocaleString('en-HK');
@@ -21,9 +21,10 @@
    name.textContent=label.querySelector('.option-name').textContent;date.textContent=label.querySelector('.option-date').textContent;
    const attendeeInputs=[...document.querySelectorAll('[data-participant-sku="'+sku+'"]')];
    const attendees=$('#same-participant').checked?Array(quantity(sku)).fill(form.buyerName.value.trim()):attendeeInputs.map(x=>x.value.trim());
-   names.textContent=quantity(sku)+' 份 · 參加者：'+attendees.join('、');price.textContent=money(quantity(sku)*(sku==='CREATOR_PASS'?2772:sku.startsWith('LIVE_')?180:400));
+   names.textContent=quantity(sku)+' 份 · 參加者：'+attendees.join('、');const line=window.festivalCurrentQuote().lines.find(x=>x.sku===sku);price.textContent=money(line.amount);
    text.append(name,date,names);row.append(img,text,price);list.append(row);
   }
+  const quote=window.festivalCurrentQuote();$('#review-discount').textContent=quote.discount?'優惠碼 '+quote.coupon+' · 已減 '+money(quote.discount)+' · 合共 '+money(quote.amount):'';
   const dl=$('#review-details');dl.replaceChildren();
   [['購買人',form.buyerName.value],['電郵',form.email.value],['電話',form.phone.value]].forEach(([k,v])=>{const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=k;dd.textContent=v;dl.append(dt,dd)});
  }

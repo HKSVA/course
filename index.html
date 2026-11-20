@@ -928,7 +928,7 @@ const COUPON = {
 function openEnrol(key) {
   const routes={earTraining:'ear-training',tueGroup:'vocal-gym',satGroup:'vocal-gym',songwriting:'songwriting',performer3:'performer',performer4:'performer',private:'private'};
   if (!location.pathname.startsWith('/enrol/') && routes[key]) {
-    location.href='/enrol/'+routes[key]+'/?course='+encodeURIComponent(key);
+    location.href='/enrol/'+routes[key]+'/?course='+encodeURIComponent(key)+(key==='private' ? '&tier='+encodeURIComponent(calcTier)+'&format='+encodeURIComponent(calcFmt) : '');
     return;
   }
   modalCourse = key || '';
@@ -1072,6 +1072,7 @@ function submitStep1() {
 }
 
 function closeEnrol() {
+  if(location.pathname.startsWith('/enrol/')) { location.href='/'; return; }
   document.getElementById('enrol-modal').classList.remove('open');
   document.body.style.overflow = '';
 }
@@ -1251,6 +1252,11 @@ if(location.pathname.startsWith('/enrol/')) {
     const style=document.createElement('style');
     style.textContent='#enrol-modal{position:relative!important;display:flex!important;min-height:100vh;background:#14161a!important;padding:24px 12px!important;} body>div:not(#enrol-modal):not(#waitlist-modal){display:none!important;} #enrol-modal.open{overflow:visible!important;}';
     document.head.appendChild(style);
+    const intakeParams=new URLSearchParams(location.search);
+    if(key==='private' && PRICES[intakeParams.get('tier')]) {
+      setTier(intakeParams.get('tier'));
+      setFmt(intakeParams.get('format')==='duo' ? 'duo' : 'solo');
+    }
     openEnrol(key);
     document.body.style.overflow='auto';
     if(typeof fbq==='function') fbq('track','ViewContent',{content_name:COURSES[key][0],content_ids:[key],content_type:'course'});

@@ -926,6 +926,11 @@ const COUPON = {
 };
 
 function openEnrol(key) {
+  const routes={earTraining:'ear-training',tueGroup:'vocal-gym',satGroup:'vocal-gym',songwriting:'songwriting',performer3:'performer',performer4:'performer',private:'private'};
+  if (!location.pathname.startsWith('/enrol/') && routes[key]) {
+    location.href='/enrol/'+routes[key]+'/?course='+encodeURIComponent(key);
+    return;
+  }
   modalCourse = key || '';
   appliedCoupon = '';
   document.getElementById('m-coupon').value = '';
@@ -1047,8 +1052,14 @@ function submitStep1() {
     method: 'POST',
     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
     body: JSON.stringify(payload)
-  }).then(() => {
+  }).then(response => { if (!response.ok) throw new Error('HTTP error'); return response.json(); }).then(result => {
+    if (!result.success) throw new Error(result.error || 'Registration failed');
     if (statusEl) statusEl.textContent = '資料已同步 SVA 系統 ✓';
+    const leadKey='sva-lead:'+modalCourse+':'+payload.email+':'+payload.phone;
+    if (!sessionStorage.getItem(leadKey)) {
+      if (typeof fbq === 'function') fbq('track','Lead',{content_name:COURSES[modalCourse][0],content_ids:[modalCourse],content_type:'course'});
+      sessionStorage.setItem(leadKey,'1');
+    }
   }).catch(() => {
     if (statusEl) statusEl.textContent = '未能同步系統，但仍可用 WhatsApp 提交';
   });
@@ -1229,5 +1240,23 @@ function sendEnquiryWhatsapp() {
 </script>
 <!-- Festival banner: preserve existing courses and registration -->
 <script src="/festival/festival-banner.js?v=3.1" defer></script>
+<script>
+if(location.pathname.startsWith('/enrol/')) {
+  const route=location.pathname.split('/')[2];
+  const keys={'ear-training':'earTraining','vocal-gym':'tueGroup',songwriting:'songwriting',performer:'performer3',private:'private'};
+  const requested=new URLSearchParams(location.search).get('course');
+  const key=Object.prototype.hasOwnProperty.call(COURSES,requested) ? requested : keys[route];
+  if(key && COURSES[key]) {
+    document.title='報名 '+COURSES[key][0]+' — SVA';
+    const style=document.createElement('style');
+    style.textContent='#enrol-modal{position:relative!important;display:flex!important;min-height:100vh;background:#14161a!important;padding:24px 12px!important;} body>div:not(#enrol-modal):not(#waitlist-modal){display:none!important;} #enrol-modal.open{overflow:visible!important;}';
+    document.head.appendChild(style);
+    openEnrol(key);
+    document.body.style.overflow='auto';
+    if(typeof fbq==='function') fbq('track','ViewContent',{content_name:COURSES[key][0],content_ids:[key],content_type:'course'});
+    const back=document.createElement('a');back.href='/';back.textContent='← 返回 SVA 課程首頁';back.style.cssText='display:block;color:#fff;padding:16px;text-align:center;';document.body.prepend(back);
+  }
+}
+</script>
 </body>
 </html>

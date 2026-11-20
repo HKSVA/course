@@ -782,7 +782,11 @@ programmeOrder.forEach((id,index) => {
     const spans = row.querySelectorAll('span');
     if (spans[0]) spans[0].textContent = String(index+1).padStart(2,'0');
     const schedule = Array.from(spans).find(s => /SPK|隔週二/.test(s.textContent) && s.children.length===0);
-    const scheduleTarget = id === 'gym' ? row.querySelector('span[style*="14.5px"]') : schedule;
+    const scheduleTarget = id === 'gym' ? row.querySelector('span[style*="line-height:1.65"]') : schedule;
+    if(id==='gym') {
+      const title=Array.from(row.querySelectorAll('span')).find(s=>s.textContent.trim()==='練聲小組');
+      if(title) title.textContent='練聲小組';
+    }
     if (scheduleTarget && intakeSchedules[id]) scheduleTarget.textContent = intakeSchedules[id];
     const level = {'ear-training':'初階',gym:'初階及進階',songwriting:'公開程度'}[id];
     if (level) {
@@ -809,9 +813,11 @@ gymCards.forEach((button,index) => {
   button.disabled=false;
   button.textContent='報名 Enrol →';
   button.style.background='#1c5a45'; button.style.cursor='pointer';
-  button.onclick=()=>openEnrol('tueGroup');
+  button.onclick=()=>openEnrol(index===0 ? 'monGroup' : 'satGroup');
 });
-COURSES.tueGroup[0]='Vocal Gym 練聲小組（十二月 · Kenny、Guddy；請於報名時確認週一或週六進階班）';
+COURSES.monGroup=['Vocal Gym 練聲小組 · 週一 7:30pm · SPK · Kenny、Guddy',5000];
+COURSES.satGroup=['Vocal Gym 練聲小組 · 進階班 · 週六 7:00pm · SPK · Kenny、Guddy',5000];
+delete COURSES.tueGroup;
 COURSES.earTraining[0]='Ear Training Class（12月9日開始 · 週三 19:30 · SPK · Kenny）';
 COURSES.songwriting[0]='Songwriting Class（1/12、15/12、29/12、12/1 · 隔週二 20:00 · TST）';
 
@@ -918,15 +924,15 @@ renderTierCoaches(calcTier, true);
 let modalCourse = '';
 let appliedCoupon = '';
 
-const EXISTING_DISCOUNT_ELIGIBLE = new Set(['tueGroup','cantopop','busker','earTraining']);
+const EXISTING_DISCOUNT_ELIGIBLE = new Set(['monGroup','satGroup','cantopop','busker','earTraining']);
 const COUPON = {
   code: 'CTPBATTLE',
   amount: 250,
-  eligible: new Set(['cantopop','busker','tueGroup','earTraining'])
+  eligible: new Set(['cantopop','busker','monGroup','satGroup','earTraining'])
 };
 
 function openEnrol(key) {
-  const routes={earTraining:'ear-training',tueGroup:'vocal-gym',satGroup:'vocal-gym',songwriting:'songwriting',performer3:'performer',performer4:'performer',private:'private'};
+  const routes={earTraining:'ear-training',monGroup:'vocal-gym',satGroup:'vocal-gym',songwriting:'songwriting',performer3:'performer',performer4:'performer',private:'private'};
   if (!location.pathname.startsWith('/enrol/') && routes[key]) {
     location.href='/enrol/'+routes[key]+'/?course='+encodeURIComponent(key)+(key==='private' ? '&tier='+encodeURIComponent(calcTier)+'&format='+encodeURIComponent(calcFmt) : '');
     return;
@@ -1027,7 +1033,9 @@ function submitStep1() {
 
   const payload = {
     sheetTab: 'November 2026',
-    courseKey: modalCourse,
+    courseKey: modalCourse === 'monGroup' ? 'tueGroup' : modalCourse,
+    session: modalCourse === 'monGroup' ? '週一班 · 7:30pm · SPK' : modalCourse === 'satGroup' ? '週六進階班 · 7:00pm · SPK' : '',
+    sessionKey: modalCourse,
     pricingTier: modalCourse === 'private' ? calcTier : '',
     pricingFormat: modalCourse === 'private' ? (calcTier === 'online' ? 'solo' : calcFmt) : '',
     name: name,
@@ -1244,8 +1252,10 @@ function sendEnquiryWhatsapp() {
 <script>
 if(location.pathname.startsWith('/enrol/')) {
   const route=location.pathname.split('/')[2];
-  const keys={'ear-training':'earTraining','vocal-gym':'tueGroup',songwriting:'songwriting',performer:'performer3',private:'private'};
-  const requested=new URLSearchParams(location.search).get('course');
+  const keys={'ear-training':'earTraining','vocal-gym':'monGroup',songwriting:'songwriting',performer:'performer3',private:'private'};
+  const oldRequested=new URLSearchParams(location.search).get('course');
+  const requested=oldRequested==='tueGroup' ? 'monGroup' : oldRequested;
+  if(oldRequested==='tueGroup') { const url=new URL(location.href);url.searchParams.set('course','monGroup');history.replaceState(null,'',url); }
   const key=Object.prototype.hasOwnProperty.call(COURSES,requested) ? requested : keys[route];
   if(key && COURSES[key]) {
     document.title='報名 '+COURSES[key][0]+' — SVA';

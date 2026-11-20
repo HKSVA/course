@@ -782,7 +782,15 @@ programmeOrder.forEach((id,index) => {
     const spans = row.querySelectorAll('span');
     if (spans[0]) spans[0].textContent = String(index+1).padStart(2,'0');
     const schedule = Array.from(spans).find(s => /SPK|隔週二/.test(s.textContent) && s.children.length===0);
-    if (schedule && intakeSchedules[id]) schedule.textContent = intakeSchedules[id];
+    const scheduleTarget = id === 'gym' ? row.querySelector('span[style*="14.5px"]') : schedule;
+    if (scheduleTarget && intakeSchedules[id]) scheduleTarget.textContent = intakeSchedules[id];
+    const level = {'ear-training':'初階',gym:'初階及進階',songwriting:'公開程度'}[id];
+    if (level) {
+      const tag = document.createElement('span');
+      tag.textContent = level;
+      tag.style.cssText='display:inline-block;width:fit-content;font-size:12px;font-weight:700;line-height:1.5;color:#1c5a45;border:1px solid #1c5a45;border-radius:3px;padding:2px 8px;margin-top:8px;';
+      (scheduleTarget || row).insertAdjacentElement('afterend',tag);
+    }
   }
 });
 const earSchedule = Array.from(document.querySelectorAll('#ear-training div')).find(el => el.children.length <= 1 && el.textContent.includes('11月9日開課'));

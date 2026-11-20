@@ -720,7 +720,7 @@ const FACULTY = [
 ];
 
 // Apply the confirmed programme order without rebuilding the existing sections.
-const programmeOrder = ['ear-training','gym','cantopop','songwriting','busker','performer'];
+const programmeOrder = ['ear-training','gym','songwriting','performer'];
 const orderList = document.querySelector('#running-order > div:nth-of-type(2)');
 programmeOrder.forEach(id => {
   const row = orderList && orderList.querySelector('a[href="#' + id + '"]');
@@ -731,6 +731,66 @@ programmeOrder.forEach(id => {
   const section = document.getElementById(id);
   if (section && facultySection) facultySection.parentNode.insertBefore(section, facultySection);
 });
+
+// December intake: keep the existing components and payment keys.
+document.title = 'Courses — School of Vocal Artistry · December 2026';
+const decemberCopy = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+while (decemberCopy.nextNode()) {
+  const node = decemberCopy.currentNode;
+  if (node.parentElement.closest('script,style')) continue;
+  node.textContent = node.textContent.replace(/十一月開課/g,'十二月開課').replace(/NOVEMBER 2026/g,'DECEMBER 2026').replace(/November 2026/g,'December 2026').replace('6 small-group, practice-based programmes ↓','3個小組聲樂課程，合適不同程度 ↓').replace('Six practice-based programmes','3個小組聲樂課程，合適不同程度');
+}
+['cantopop','busker'].forEach(id => {
+  document.getElementById(id)?.setAttribute('hidden','');
+  orderList?.querySelector('a[href="#'+id+'"]')?.setAttribute('hidden','');
+  delete COURSES[id];
+});
+const intakeVisibility = document.createElement('style');
+intakeVisibility.textContent='[hidden]{display:none!important}';
+document.head.appendChild(intakeVisibility);
+const intakeSchedules = {
+  'ear-training':'12月9日開課 · 逢週三 7:30pm · 地點：新蒲崗 SPK · 導師 Kenny｜9/12、16/12、23/12、30/12（2026）',
+  gym:'逢週一 7:30pm SPK｜7/12、14/12、21/12、28/12（2026）、4/1、11/1、18/1（2027）｜進階班：逢週六 7:00pm SPK｜19/12、26/12（2026）、2/1、9/1、16/1、23/1、30/1（2027）｜導師 Kenny、Guddy',
+  songwriting:'隔週二 8:00pm · 地點：尖沙咀 TST｜1/12、15/12、29/12（2026）、12/1（2027）'
+};
+programmeOrder.forEach((id,index) => {
+  const section = document.getElementById(id);
+  if(section) {
+    const labels = document.createTreeWalker(section, NodeFilter.SHOW_TEXT);
+    while(labels.nextNode()) {
+      const n=labels.currentNode;
+      n.textContent=n.textContent.replace(/^\s*(01|02|03|04|05|06)(?=\s+[A-Z])/,String(index+1).padStart(2,'0'));
+    }
+  }
+  const row = orderList?.querySelector('a[href="#'+id+'"]');
+  if (row) {
+    const spans = row.querySelectorAll('span');
+    if (spans[0]) spans[0].textContent = String(index+1).padStart(2,'0');
+    const schedule = Array.from(spans).find(s => /SPK|隔週二/.test(s.textContent) && s.children.length===0);
+    if (schedule && intakeSchedules[id]) schedule.textContent = intakeSchedules[id];
+  }
+});
+const earSchedule = Array.from(document.querySelectorAll('#ear-training div')).find(el => el.children.length <= 1 && el.textContent.includes('11月9日開課'));
+if (earSchedule) earSchedule.textContent = intakeSchedules['ear-training'];
+const songSchedule = Array.from(document.querySelectorAll('#songwriting div')).find(el => el.children.length <= 1 && el.textContent.includes('10月27日'));
+if (songSchedule) songSchedule.textContent = intakeSchedules.songwriting;
+const gymCards = document.querySelectorAll('#gym button');
+gymCards.forEach((button,index) => {
+  const card = button.parentElement;
+  if(index===2) { card.hidden=true; return; }
+  card.querySelector('span').textContent = index===0 ? '練聲小組' : '練聲小組 · 進階班';
+  const details=card.querySelectorAll(':scope > div');
+  details[1].textContent='導師 Kenny、Guddy';
+  details[2].textContent=index===0 ? '逢週一 7:30pm · 新蒲崗 SPK｜7/12、14/12、21/12、28/12（2026）、4/1、11/1、18/1（2027）' : '逢週六 7:00pm · 新蒲崗 SPK｜19/12、26/12（2026）、2/1、9/1、16/1、23/1、30/1（2027）';
+  if(details[3]) details[3].hidden=true;
+  button.disabled=false;
+  button.textContent='報名 Enrol →';
+  button.style.background='#1c5a45'; button.style.cursor='pointer';
+  button.onclick=()=>openEnrol('tueGroup');
+});
+COURSES.tueGroup[0]='Vocal Gym 練聲小組（十二月 · Kenny、Guddy；請於報名時確認週一或週六進階班）';
+COURSES.earTraining[0]='Ear Training Class（12月9日開始 · 週三 19:30 · SPK · Kenny）';
+COURSES.songwriting[0]='Songwriting Class（1/12、15/12、29/12、12/1 · 隔週二 20:00 · TST）';
 
 const mellissaProfile = FACULTY.find(f => f.name.indexOf('Mellissa') === 0);
 if (mellissaProfile) {

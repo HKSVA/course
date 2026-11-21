@@ -5,7 +5,9 @@ const FESTIVAL_PROGRAMS = {
   "time": "兩日完整體驗",
   "price": 2772,
   "venue": "柏斯音樂廳 · 銅鑼灣時代廣場9樓半",
-  "detail": "包括六堂公開課、四節《全民造歌》創作環節及兩場 MUSIC LIVE"
+  "detail": "包括六堂公開課、四節《全民造歌》創作環節及兩場 MUSIC LIVE",
+  "venueMap": "https://maps.app.goo.gl/kYTCdpzytshsRXSa8",
+  "arrival": "請參加者至少提早於活動前10分鐘到達登記"
  },
  "D1_VOCAL": {
   "name": "Guddy Chan｜聲帶結構和發聲技巧",
@@ -13,7 +15,9 @@ const FESTIVAL_PROGRAMS = {
   "time": "10:00–11:30",
   "price": 400,
   "venue": "柏斯音樂廳 · 銅鑼灣時代廣場9樓半",
-  "detail": ""
+  "detail": "",
+  "venueMap": "https://maps.app.goo.gl/kYTCdpzytshsRXSa8",
+  "arrival": "請參加者至少提早於活動前10分鐘到達登記"
  },
  "D1_SONGWRITING": {
   "name": "J.Arie 雷深如｜廣東歌的流行曲式結構",
@@ -21,7 +25,9 @@ const FESTIVAL_PROGRAMS = {
   "time": "11:30–13:00",
   "price": 400,
   "venue": "柏斯音樂廳 · 銅鑼灣時代廣場9樓半",
-  "detail": ""
+  "detail": "",
+  "venueMap": "https://maps.app.goo.gl/kYTCdpzytshsRXSa8",
+  "arrival": "請參加者至少提早於活動前10分鐘到達登記"
  },
  "D1_LYRIC": {
   "name": "Oscar 李文曦｜廣東話韻律結構與填詞概念",
@@ -29,7 +35,9 @@ const FESTIVAL_PROGRAMS = {
   "time": "15:00–16:30",
   "price": 400,
   "venue": "柏斯音樂廳 · 銅鑼灣時代廣場9樓半",
-  "detail": ""
+  "detail": "",
+  "venueMap": "https://maps.app.goo.gl/kYTCdpzytshsRXSa8",
+  "arrival": "請參加者至少提早於活動前10分鐘到達登記"
  },
  "D2_VOCAL_SCIENCE": {
   "name": "Guddy Chan｜廣東話歌唱方法",
@@ -37,7 +45,9 @@ const FESTIVAL_PROGRAMS = {
   "time": "10:00–11:30",
   "price": 400,
   "venue": "柏斯音樂廳 · 銅鑼灣時代廣場9樓半",
-  "detail": ""
+  "detail": "",
+  "venueMap": "https://maps.app.goo.gl/kYTCdpzytshsRXSa8",
+  "arrival": "請參加者至少提早於活動前10分鐘到達登記"
  },
  "D2_PERFORMANCE": {
   "name": "Manson 張進翹｜從旋律製作 DEMO",
@@ -45,7 +55,9 @@ const FESTIVAL_PROGRAMS = {
   "time": "11:30–13:00",
   "price": 400,
   "venue": "柏斯音樂廳 · 銅鑼灣時代廣場9樓半",
-  "detail": ""
+  "detail": "",
+  "venueMap": "https://maps.app.goo.gl/kYTCdpzytshsRXSa8",
+  "arrival": "請參加者至少提早於活動前10分鐘到達登記"
  },
  "D2_HARMONY": {
   "name": "Ah Lee 奚伊妮｜廣東歌和音技巧",
@@ -53,7 +65,9 @@ const FESTIVAL_PROGRAMS = {
   "time": "15:00–16:30",
   "price": 400,
   "venue": "柏斯音樂廳 · 銅鑼灣時代廣場9樓半",
-  "detail": ""
+  "detail": "",
+  "venueMap": "https://maps.app.goo.gl/kYTCdpzytshsRXSa8",
+  "arrival": "請參加者至少提早於活動前10分鐘到達登記"
  },
  "LIVE_D1": {
   "name": "MUSIC LIVE《廣東歌：無伴奏》",
@@ -61,7 +75,9 @@ const FESTIVAL_PROGRAMS = {
   "time": "19:00",
   "price": 180,
   "venue": "柏斯音樂廳 · 銅鑼灣時代廣場9樓半",
-  "detail": ""
+  "detail": "",
+  "venueMap": "https://maps.app.goo.gl/kYTCdpzytshsRXSa8",
+  "arrival": "請參加者至少提早於活動前10分鐘到達登記"
  },
  "LIVE_D2": {
   "name": "MUSIC LIVE《廣東歌：創作力》",
@@ -69,29 +85,37 @@ const FESTIVAL_PROGRAMS = {
   "time": "18:00",
   "price": 180,
   "venue": "柏斯音樂廳 · 銅鑼灣時代廣場9樓半",
-  "detail": ""
+  "detail": "",
+  "venueMap": "https://maps.app.goo.gl/kYTCdpzytshsRXSa8",
+  "arrival": "請參加者至少提早於活動前10分鐘到達登記"
  },
  "DAY3_FINAL": {
   "name": "《廣東歌唱擂台》總決賽及單曲發佈會",
   "date": "2026年12月13日（日）",
   "time": "14:00–17:00",
   "price": 380,
-  "venue": "Portal · 新蒲崗"
+  "venue": "Portal · 新蒲崗彩虹道212號THE BURROW",
+  "venueMap": "https://maps.app.goo.gl/kQgZGCHyKhiHGxwH7",
+  "arrival": ""
  },
  "DAY3_CONCERT": {
   "name": "流行聲學系《廣東歌：非賣品》音樂會",
   "date": "2026年12月13日（日）",
   "time": "19:00–22:00",
   "price": 380,
-  "venue": "Portal · 新蒲崗"
+  "venue": "Portal · 新蒲崗彩虹道212號THE BURROW",
+  "venueMap": "https://maps.app.goo.gl/kQgZGCHyKhiHGxwH7",
+  "arrival": ""
  },
  "DAY3_FULLPASS": {
   "name": "12月13日全日票｜總決賽＋《廣東歌：非賣品》",
   "date": "2026年12月13日（日）",
   "time": "14:00–17:00 / 19:00–22:00",
   "price": 680,
-  "venue": "Portal · 新蒲崗",
-  "detail": "包括下午總決賽及單曲發佈會、晚上《廣東歌：非賣品》音樂會；同一位參加者使用。"
+  "venue": "Portal · 新蒲崗彩虹道212號THE BURROW",
+  "detail": "包括下午總決賽及單曲發佈會、晚上《廣東歌：非賣品》音樂會；同一位參加者使用。",
+  "venueMap": "https://maps.app.goo.gl/kQgZGCHyKhiHGxwH7",
+  "arrival": ""
  },
  "DAY1_PASS": {
   "name": "DAY 1 寫歌 PASS",
@@ -99,7 +123,9 @@ const FESTIVAL_PROGRAMS = {
   "time": "10:00–17:30 · MUSIC LIVE 19:00",
   "price": 1980,
   "venue": "柏斯音樂廳 · 銅鑼灣時代廣場9樓半",
-  "detail": "包括當日3堂公開課、2節《全民造歌》共創、1場MUSIC LIVE及1張Parsons Coffee飲品券；不包括另一天及12月13日節目。"
+  "detail": "包括當日3堂公開課、2節《全民造歌》共創、1場MUSIC LIVE及1張Parsons Coffee飲品券；不包括另一天及12月13日節目。",
+  "venueMap": "https://maps.app.goo.gl/kYTCdpzytshsRXSa8",
+  "arrival": "請參加者至少提早於活動前10分鐘到達登記"
  },
  "DAY2_PASS": {
   "name": "DAY 2 造歌 PASS",
@@ -107,14 +133,16 @@ const FESTIVAL_PROGRAMS = {
   "time": "10:00–17:30 · MUSIC LIVE 18:00",
   "price": 1980,
   "venue": "柏斯音樂廳 · 銅鑼灣時代廣場9樓半",
-  "detail": "包括當日3堂公開課、2節《全民造歌》共創、1場MUSIC LIVE及1張Parsons Coffee飲品券；不包括另一天及12月13日節目。"
+  "detail": "包括當日3堂公開課、2節《全民造歌》共創、1場MUSIC LIVE及1張Parsons Coffee飲品券；不包括另一天及12月13日節目。",
+  "venueMap": "https://maps.app.goo.gl/kYTCdpzytshsRXSa8",
+  "arrival": "請參加者至少提早於活動前10分鐘到達登記"
  }
 };
 function festivalQuote(products, quantities, coupon) {
  const code=String(coupon||'').trim().toUpperCase();
- if(code&&code!=='FINAL50')throw Error('優惠碼無效。');
+ if(code&&!(/^CB26-\d{4}$/.test(code)))throw Error('優惠碼無效。');
  if(code&&!products.includes('DAY3_FINAL'))throw Error('此優惠碼只適用於總決賽單場票。');
- const lines=products.map(sku=>{const p=FESTIVAL_PROGRAMS[sku],q=Number(quantities[sku]);if(!p||!Number.isInteger(q)||q<1||q>6)throw Error('每個項目可選1至6份。');const gross=p.price*q,discount=code==='FINAL50'&&sku==='DAY3_FINAL'?190*q:0;return {sku,q,gross,discount,amount:gross-discount};});
+ const lines=products.map(sku=>{const p=FESTIVAL_PROGRAMS[sku],q=Number(quantities[sku]);if(!p||!Number.isInteger(q)||q<1||q>6)throw Error('每個項目可選1至6份。');const gross=p.price*q,discount=code&&sku==='DAY3_FINAL'?190:0;return {sku,q,gross,discount,amount:gross-discount};});
  return {coupon:code,gross:lines.reduce((n,l)=>n+l.gross,0),discount:lines.reduce((n,l)=>n+l.discount,0),amount:lines.reduce((n,l)=>n+l.amount,0),lines};
 }
 
